@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solve for your present!</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f7;
+            color: #1d1d1f;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background-color: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            margin-bottom: 5px;
+            font-size: 24px;
+        }
+        .subtitle {
+            font-size: 14px;
+            color: #86868b;
+            margin-bottom: 30px;
+        }
+        .riddle {
+            font-size: 18px;
+            line-height: 1.5;
+            background-color: #f5f5f7;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        input {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            border: 1px solid #d2d2d7;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #0071e3;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 15px 30px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #0077ed;
+        }
+        .hint-container {
+            margin-top: 20px;
+            width: 100%;
+        }
+        .hint {
+            margin: 10px 0;
+            padding: 12px;
+            border-radius: 8px;
+            background-color: #f5f5f7;
+            display: none;
+        }
+        .hint.visible {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        .feedback {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        .success-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 1s;
+        }
+        .success-icon {
+            width: 150px;
+            height: 150px;
+            margin: 20px 0;
+        }
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            border-radius: 50%;
+            animation: fall 3s linear infinite;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes fall {
+            to { transform: translateY(100vh) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Solve for your present!</h1>
+        <div class="subtitle">(1 word, 6 letters)</div>
+        
+        <div id="game">
+            <div class="riddle">
+                I am never lost, but you may find me. My journeys might be long, or cut too short; the distance I've traveled is often the point.
+            </div>
+            
+            <input type="text" id="guess" placeholder="Enter your guess here">
+            <button id="submit">Submit Answer</button>
+            
+            <div class="hint-container">
+                <button id="hint-button">Need a hint?</button>
+                <div class="hint" id="hint1">Hint 1: No more uh oh moments!</div>
+                <div class="hint" id="hint2">Hint 2: Find me with your iPhone.</div>
+                <div class="hint" id="hint3">Hint 3: Put me on your luggage, dangle me on your sunglasses, whatever you're afraid of losing.</div>
+            </div>
+            
+            <div class="feedback" id="feedback"></div>
+        </div>
+        
+        <div class="success-container" id="success">
+            <h2>You got it!</h2>
+            <p>Yes, your birthday present is an AirTag! 🎉</p>
+            <svg class="success-icon" viewBox="0 0 510 510" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="255" cy="255" r="255" fill="#E6E6E6"/>
+                <circle cx="255" cy="255" r="200" fill="#FFFFFF"/>
+                <circle cx="255" cy="255" r="180" fill="#F2F2F2"/>
+                <path d="M255 140 L270 190 L320 190 L280 220 L295 270 L255 240 L215 270 L230 220 L190 190 L240 190 Z" fill="#A1A1A6"/>
+            </svg>
+            <p>Happy Birthday! 🎂</p>
+        </div>
+    </div>
+
+    <script>
+        const submitButton = document.getElementById('submit');
+        const guessInput = document.getElementById('guess');
+        const hintButton = document.getElementById('hint-button');
+        const hints = [
+            document.getElementById('hint1'),
+            document.getElementById('hint2'),
+            document.getElementById('hint3')
+        ];
+        const feedbackElement = document.getElementById('feedback');
+        const gameElement = document.getElementById('game');
+        const successElement = document.getElementById('success');
+        
+        let hintCount = 0;
+        
+        submitButton.addEventListener('click', checkAnswer);
+        guessInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+        
+        hintButton.addEventListener('click', showNextHint);
+        
+        function checkAnswer() {
+            const guess = guessInput.value.trim().toLowerCase();
+            
+            if (guess === 'airtag') {
+                createConfetti();
+                gameElement.style.display = 'none';
+                successElement.style.display = 'flex';
+            } else {
+                feedbackElement.textContent = 'Not quite right, try again!';
+                feedbackElement.style.color = '#ff3b30';
+            }
+        }
+        
+        function showNextHint() {
+            if (hintCount < hints.length) {
+                hints[hintCount].classList.add('visible');
+                hintCount++;
+                
+                if (hintCount === hints.length) {
+                    hintButton.style.display = 'none';
+                }
+            }
+        }
+        
+        function createConfetti() {
+            const colors = ['#FF4136', '#0074D9', '#2ECC40', '#FFDC00', '#FF851B', '#B10DC9'];
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = confetti.style.width;
+                confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+                confetti.style.animationDelay = Math.random() * 5 + 's';
+                
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+        }
+    </script>
+</body>
+</html>
