@@ -11,11 +11,11 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
             padding: 20px;
-            background-color: #f5f5f7;
-            color: #1d1d1f;
+            background-color: #f8f9fa;
+            color: #212529;
             text-align: center;
             box-sizing: border-box;
         }
@@ -23,67 +23,82 @@
             max-width: 800px;
             width: 100%;
             background-color: white;
-            border-radius: 12px;
+            border-radius: 15px;
             padding: 30px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
         }
         h1 {
             margin-bottom: 5px;
-            font-size: 24px;
+            font-size: 26px;
+            color: #2E7D32;
         }
         .subtitle {
-            font-size: 14px;
-            color: #86868b;
+            font-size: 16px;
+            color: #6c757d;
             margin-bottom: 30px;
         }
         .riddle {
             font-size: 18px;
-            line-height: 1.5;
-            background-color: #f5f5f7;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
+            line-height: 1.6;
+            background-color: #f1f8e9;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border-left: 4px solid #7CB342;
         }
-        input {
-            width: 100%;
-            padding: 15px;
-            font-size: 16px;
-            border: 1px solid #d2d2d7;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            box-sizing: border-box;
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
         }
         button {
-            background-color: #0071e3;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 15px 30px;
+            padding: 14px 28px;
             font-size: 16px;
             cursor: pointer;
-            transition: background-color 0.2s;
+            border-radius: 8px;
+            border: none;
+            transition: all 0.2s;
         }
-        button:hover {
-            background-color: #0077ed;
+        #got-it {
+            background-color: #2E7D32;
+            color: white;
+        }
+        #got-it:hover {
+            background-color: #1B5E20;
+        }
+        #give-up {
+            background-color: #f8f9fa;
+            color: #495057;
+            border: 1px solid #ced4da;
+        }
+        #give-up:hover {
+            background-color: #e9ecef;
         }
         .hint-container {
-            margin-top: 20px;
+            margin-top: 25px;
             width: 100%;
         }
         .hint {
-            margin: 10px 0;
-            padding: 12px;
+            margin: 12px 0;
+            padding: 15px;
             border-radius: 8px;
-            background-color: #f5f5f7;
+            background-color: #e8f5e9;
             display: none;
+            text-align: left;
+            border-left: 3px solid #81C784;
         }
         .hint.visible {
             display: block;
             animation: fadeIn 0.5s;
         }
-        .feedback {
-            margin-top: 20px;
-            font-weight: bold;
+        #hint-button {
+            background-color: #81C784;
+            color: white;
+            margin-bottom: 15px;
+        }
+        #hint-button:hover {
+            background-color: #66BB6A;
         }
         .success-container {
             display: none;
@@ -91,10 +106,34 @@
             align-items: center;
             animation: fadeIn 1s;
         }
-        .success-icon {
-            width: 150px;
-            height: 150px;
+        .product-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
             margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .product-name {
+            font-size: 22px;
+            font-weight: bold;
+            color: #2E7D32;
+            margin: 15px 0;
+        }
+        .product-description {
+            color: #495057;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .feature {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+            text-align: left;
+        }
+        .feature-icon {
+            margin-right: 10px;
+            color: #7CB342;
+            font-weight: bold;
         }
         .confetti {
             position: absolute;
@@ -111,79 +150,106 @@
         @keyframes fall {
             to { transform: translateY(100vh) rotate(360deg); }
         }
+        .game-section, .question-section {
+            margin-bottom: 30px;
+        }
+        .emoji {
+            font-size: 24px;
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Solve for your present!</h1>
-        <div class="subtitle">(1 word, 6 letters)</div>
-        
         <div id="game">
-            <div class="riddle">
-                I am never lost, but you may find me. My journeys might be long, or cut too short; the distance I've traveled is often the point.
+            <h1>Solve for your present!</h1>
+            <div class="subtitle">A nature lover's tech surprise awaits</div>
+            
+            <div class="game-section">
+                <div class="riddle">
+                    Small visitors may come to feed, but often times you'll never see! 
+                    Put food out and enjoy the view, a finch, a wren, maybe a titmouse or two!
+                </div>
+                
+                <div class="question-section">
+                    <p>Have you figured out what your gift is?</p>
+                    <div class="button-container">
+                        <button id="got-it">I've Got It!</button>
+                        <button id="give-up">Give Up</button>
+                    </div>
+                </div>
+                
+                <div class="hint-container">
+                    <button id="hint-button">Need a hint?</button>
+                    <div class="hint" id="hint1"><span class="emoji">🐦</span> Each time a visitor comes, I'll take a snap. ID them yourself, or outsource that!</div>
+                    <div class="hint" id="hint2"><span class="emoji">📱</span> It's Ring for birds!</div>
+                    <div class="hint" id="hint3"><span class="emoji">🌳</span> I combine bird-watching with AI technology to create a digital bird journal without you lifting a finger.</div>
+                </div>
             </div>
-            
-            <input type="text" id="guess" placeholder="Enter your guess here">
-            <button id="submit">Submit Answer</button>
-            
-            <div class="hint-container">
-                <button id="hint-button">Need a hint?</button>
-                <div class="hint" id="hint1">Hint 1: No more uh oh moments!</div>
-                <div class="hint" id="hint2">Hint 2: Find me with your iPhone.</div>
-                <div class="hint" id="hint3">Hint 3: Put me on your luggage, dangle me on your sunglasses, whatever you're afraid of losing.</div>
-            </div>
-            
-            <div class="feedback" id="feedback"></div>
         </div>
         
         <div class="success-container" id="success">
-            <h2>You got it!</h2>
-            <p>Yes, your birthday present is an AirTag! 🎉</p>
-            <svg class="success-icon" viewBox="0 0 510 510" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="255" cy="255" r="255" fill="#E6E6E6"/>
-                <circle cx="255" cy="255" r="200" fill="#FFFFFF"/>
-                <circle cx="255" cy="255" r="180" fill="#F2F2F2"/>
-                <path d="M255 140 L270 190 L320 190 L280 220 L295 270 L255 240 L215 270 L230 220 L190 190 L240 190 Z" fill="#A1A1A6"/>
-            </svg>
-            <p>Happy Birthday! 🎂</p>
+            <h2>Your gift is a...</h2>
+            <div class="product-name">NETVUE Birdfy AI Smart Bird Feeder</div>
+            
+            <div class="product-image-container">
+                <img src="birdfeeder.png" alt="NETVUE Birdfy AI Smart Bird Feeder" class="product-image">
+            </div>
+            
+            <p class="product-description">
+                This smart bird feeder uses AI to identify bird species in real-time and sends notifications 
+                to your phone when birds visit. It's like having a personal ornithologist in your backyard!
+            </p>
+            
+            <div class="features">
+                <div class="feature">
+                    <span class="feature-icon">✓</span>
+                    <span>AI bird recognition technology identifies species automatically</span>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">✓</span>
+                    <span>Get real-time alerts when birds visit your feeder</span>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">✓</span>
+                    <span>HD camera captures beautiful photos and videos of your visitors</span>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">✓</span>
+                    <span>Create a digital bird journal without any effort</span>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">✓</span>
+                    <span>Weather-resistant design for year-round bird watching</span>
+                </div>
+            </div>
+            
+            <p style="margin-top: 30px; font-weight: bold;">Happy Birthday! 🎂 🐦</p>
         </div>
     </div>
 
     <script>
-        const submitButton = document.getElementById('submit');
-        const guessInput = document.getElementById('guess');
+        const gotItButton = document.getElementById('got-it');
+        const giveUpButton = document.getElementById('give-up');
         const hintButton = document.getElementById('hint-button');
         const hints = [
             document.getElementById('hint1'),
             document.getElementById('hint2'),
             document.getElementById('hint3')
         ];
-        const feedbackElement = document.getElementById('feedback');
         const gameElement = document.getElementById('game');
         const successElement = document.getElementById('success');
         
         let hintCount = 0;
         
-        submitButton.addEventListener('click', checkAnswer);
-        guessInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                checkAnswer();
-            }
-        });
-        
+        gotItButton.addEventListener('click', showSuccess);
+        giveUpButton.addEventListener('click', showSuccess);
         hintButton.addEventListener('click', showNextHint);
         
-        function checkAnswer() {
-            const guess = guessInput.value.trim().toLowerCase();
-            
-            if (guess === 'airtag') {
-                createConfetti();
-                gameElement.style.display = 'none';
-                successElement.style.display = 'flex';
-            } else {
-                feedbackElement.textContent = 'Not quite right, try again!';
-                feedbackElement.style.color = '#ff3b30';
-            }
+        function showSuccess() {
+            createConfetti();
+            gameElement.style.display = 'none';
+            successElement.style.display = 'flex';
         }
         
         function showNextHint() {
@@ -198,7 +264,7 @@
         }
         
         function createConfetti() {
-            const colors = ['#FF4136', '#0074D9', '#2ECC40', '#FFDC00', '#FF851B', '#B10DC9'];
+            const colors = ['#4CAF50', '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107', '#3F51B5'];
             
             for (let i = 0; i < 100; i++) {
                 const confetti = document.createElement('div');
